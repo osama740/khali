@@ -121,8 +121,8 @@ section:hover {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.item:hover {
-  transform: scale(1.07); /* يكبر شوي */
+.item:hover, .item.touch-active {
+  transform: scale(1.07);
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
 }
 

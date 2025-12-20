@@ -181,3 +181,13 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", showItems);
   showItems(); // لتفعيل اللي ظاهر من البداية
 });
+
+
+document.querySelectorAll('.item').forEach(item => {
+  item.addEventListener('touchstart', () => {
+    item.classList.add('touch-active');
+  });
+  item.addEventListener('touchend', () => {
+    setTimeout(() => item.classList.remove('touch-active'), 500);
+  });
+});
