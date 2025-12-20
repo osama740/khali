@@ -206,3 +206,13 @@ document.querySelectorAll('.item').forEach(item => {
     }, 300);
   });
 });
+
+
+// تتبع زر إرسال الطلب عبر واتساب
+document.getElementById("sendOrder").addEventListener("click", () => {
+  gtag('event', 'order_sent', {
+    'event_category': 'cart',
+    'event_label': 'WhatsApp',
+    'value': 1
+  });
+});
