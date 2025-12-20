@@ -191,3 +191,19 @@ document.querySelectorAll('.item').forEach(item => {
     setTimeout(() => item.classList.remove('touch-active'), 500);
   });
 });
+// تأثير hover للموبايل
+document.querySelectorAll('.item').forEach(item => {
+  let touched = false;
+
+  item.addEventListener('touchstart', () => {
+    if (!touched) {
+      item.style.transform = 'scale(1.07)';
+      item.style.boxShadow = '0 0 15px rgba(255, 215, 0, 0.6)';
+      touched = true;
+    } else {
+      item.style.transform = '';
+      item.style.boxShadow = '';
+      touched = false;
+    }
+  });
+});
