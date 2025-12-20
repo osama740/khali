@@ -1,0 +1,465 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+}
+
+/* Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Header */
+.main-header {
+  text-align: center;
+  padding: 30px 0;
+  border-bottom: 3px solid #FFD700;
+}
+
+.main-header h1 {
+  color: #FFD700;
+  font-size: 40px;
+}
+
+.main-header p {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* Nav */
+.main-nav {
+  background-color: #FFD700;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.main-nav a {
+  color: #000;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: bold;
+}
+
+/* Sections */
+section {
+  margin: 50px 0;
+}
+
+section h2 {
+  color: #FFD700;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #FFD700;
+  padding-bottom: 10px;
+}
+
+/* Menu items */
+.menu-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.item {
+  background-color: #111;
+  border: 1px solid #FFD700;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.item h3 {
+  color: #FFD700;
+  margin-bottom: 10px;
+}
+
+.item p {
+  font-size: 14px;
+}
+
+.price {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #FFD700;
+}
+
+/* Footer */
+.main-footer {
+  text-align: center;
+  padding: 20px;
+  border-top: 2px solid #FFD700;
+  background-color: #111;
+  margin-top: 40px;
+}
+/* ===== Hover على السكشن ===== */
+section {
+  margin: 50px 0;
+  padding: 20px;
+  border-radius: 15px;
+  transition: background-color 0.3s ease;
+}
+
+section:hover {
+  background-color: #111; /* يتغير لون السكشن */
+}
+
+/* ===== Hover على الطلبات ===== */
+.item {
+  background-color: #111;
+  border: 1px solid #FFD700;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.item:hover {
+  transform: scale(1.07); /* يكبر شوي */
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+/* خلفية سوداء صغيرة خلف أسماء الأصناف */
+.item h3 {
+  display: inline-block;
+  background-color: #000;
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: #FFD700;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+/* ===== Main Nav Links ===== */
+.main-nav a {
+  display: inline-block;
+  background-color: #000;
+  color: #FFD700;
+  text-decoration: none;
+  margin: 5px 10px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* Hover على روابط المنيو */
+.main-nav a:hover {
+  background-color: #FFD700;
+  color: #000;
+  transform: scale(1.1);
+}
+
+
+/* ===== Responsive - Mobile ===== */
+@media (max-width: 768px) {
+
+  /* الهيدر */
+  .main-header h1 {
+    font-size: 28px;
+  }
+
+  .main-header p {
+    font-size: 14px;
+  }
+
+  /* الناف */
+  .nav-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-logo {
+    width: 40px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .main-nav a {
+    margin: 5px;
+    padding: 6px 14px;
+    font-size: 14px;
+  }
+
+  /* السكشن */
+  section {
+    margin: 30px 0;
+    padding: 15px;
+  }
+
+  section h2 {
+    font-size: 22px;
+  }
+
+  /* الكروت */
+  .menu-items {
+    grid-template-columns: 1fr;
+  }
+
+  .item {
+    padding: 15px;
+  }
+
+  .item h3 {
+    font-size: 16px;
+  }
+
+  .price {
+    font-size: 14px;
+  }
+}
+/* Smooth Scroll لجميع الروابط الداخلية */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ناف بار ثابت */
+.main-nav {
+  position: sticky; /* أو fixed إذا بدك يظل فوق الشاشة دائمًا */
+  top: 0;           /* ثابت فوق */
+  width: 100%;
+  background-color: #000; /* خلفية سوداء */
+  z-index: 1000;          /* فوق كل العناصر */
+  padding: 10px 0;
+}
+
+
+#backToTop {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  font-size: 24px;
+  background: #FFD700;
+  color: #000;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+
+  /* الأنيميشن */
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* ظهور الزر عند النزول */
+#backToTop.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* تأثير التحويم (Glow + تكبير) */
+#backToTop:hover {
+  box-shadow: 0 0 15px #FFD700;
+  transform: translateY(0) scale(1.15);
+}
+
+/* الصورة */
+.menu-items img {
+  display: block;
+  width: 100%;          /* ❌ لا تستخدم 100vw */
+  max-width: 100%;
+  height: 160px;
+  object-fit: contain; /* ✅ بتبين الصورة كاملة */
+  background: #00000000;    /* خلفية سوداء للفراغ */
+  object-position: center;
+}
+.item:active {
+  transform: scale(1.03);
+}
+
+
+
+/* 🛒 سلة الطلبات */
+/* زر السلة العائم */
+#cartButton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  background: #FFD700;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 3000;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#cartButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+}
+
+/* عداد العناصر */
+#cartCount {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* السلة الجانبية */
+#sideCart {
+  position: fixed;
+  top: 0;
+  right: -320px; /* مغلقة خارج الشاشة */
+  width: 300px;
+  height: 100%;
+  background: #000;
+  border-left: 3px solid #FFD700;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  z-index: 2500;
+  transition: right 0.4s ease;
+}
+
+#sideCart.open {
+  right: 0; /* عند الفتح */
+}
+
+/* رأس السلة */
+.sideCart-header {
+  display: flex;
+  justify-content: space-between;
+  color: #FFD700;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+#closeCart {
+  background: transparent;
+  border: none;
+  color: #FFD700;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#closeCart:hover {
+  color: red;
+}
+
+/* عناصر السلة */
+#sideCartItems {
+  flex: 1;              /* ياخذ كل المساحة المتاحة */
+  overflow-y: auto;     /* Scroll للعناصر فقط */
+  margin-bottom: 10px;  /* مساحة صغيرة قبل الفوتر */
+}
+
+#sideCartItems .cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  border: 1px solid #FFD700;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#sideCartItems .cart-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+/* تذييل السلة */
+.sideCart-footer {
+  flex-shrink: 0;       /* يبقى ثابت */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sideCart-footer span {
+  font-weight: bold;
+  color: #FFD700;
+}
+
+.sideCart-footer button {
+  background: #FFD700;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.sideCart-footer button:hover {
+  background: #fff200;
+}
+
+/* زر السلة العائم */
+#cartButton {
+  position: fixed;
+  bottom: 100px; /* فوق زر العودة للأعلى */
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #FFD700;
+  color: #000;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+  z-index: 3000;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#cartButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+#sendOrder {
+  background-color: #FFD700; /* أصفر */
+  color: #000; 
+  border: none;
+  padding: 10px 18px;
+  margin-left: 10px;
+  margin-right: 10px; /* مسافة بسيطة عن زر تفريغ السلة */
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.cart-buttons {
+  display: flex;
+  justify-content: flex-start; /* أو center إذا بدك بالوسط */
+  gap: 15px; /* المسافة بين الزرين */
+  margin-top: 10px;
+}
+
+.cart-buttons button {
+  flex: none; /* يمنع أي تمدد */
+}
