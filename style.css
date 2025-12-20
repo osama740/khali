@@ -125,6 +125,18 @@ section:hover {
   transform: scale(1.07); /* يكبر شوي */
   box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
 }
+
+
+/* Touch-friendly hover effect */
+.item.touch-active {
+  transform: scale(1.07);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+
 /* خلفية سوداء صغيرة خلف أسماء الأصناف */
 .item h3 {
   display: inline-block;
@@ -462,4 +474,63 @@ html {
 
 .cart-buttons button {
   flex: none; /* يمنع أي تمدد */
+}
+
+
+
+/* تصميم الـ select ليكون متناسق مع موقعك */
+.item .price-select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.item .price-select {
+  width: 100%;
+  padding: 8px 35px 8px 12px; /* مسافة كافية للسهم على اليمين */
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 2px solid #FFD700;
+  background-color: #111;
+  color: #FFD700;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+}
+
+/* السهم */
+.item .price-select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;  /* مسافة من اليمين */
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #FFD700;
+  font-size: 12px;
+}
+
+
+.item {
+  opacity: 0;
+  transform: translateY(20px); /* يبدأ الكارت شوي لتحت */
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* Highlight effect */
+.highlight {
+  animation: highlightAnim 1s ease;
+}
+
+@keyframes highlightAnim {
+  0%   { background-color: #FFD700; color: #000; }
+  50%  { background-color: #fff200; color: #000; }
+  100% { background-color: #111; color: #FFD700; }
 }

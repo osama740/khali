@@ -11,6 +11,22 @@ const clearCartBtn = document.getElementById('clearCart');
 
   let cart = [];
 
+
+// Touch-friendly hover effect
+document.querySelectorAll('.item').forEach(el => {
+  el.addEventListener('touchstart', () => {
+    el.classList.add('touch-active');
+    // إزالة التأثير بعد 300ms
+    setTimeout(() => {
+      el.classList.remove('touch-active');
+    }, 300);
+  });
+});
+
+
+
+
+
   // فتح/غلق السلة
   cartButton.addEventListener("click", () => {
     sideCart.classList.add("open");
@@ -21,21 +37,41 @@ const clearCartBtn = document.getElementById('clearCart');
   });
 
   // إضافة عنصر عند الضغط على أي .item
-  document.querySelectorAll(".item").forEach(el => {
-    el.addEventListener("click", () => {
-      const nameEl = el.querySelector("h3");
-      const priceEl = el.querySelector(".price");
-      if(!nameEl || !priceEl) return;
-
-      const name = nameEl.innerText;
-      const price = parseInt(priceEl.innerText.replace(/[^0-9]/g,''));
-
-      // أضف إلى السلة
-      cart.push({name, price});
-      updateCart();
-    });
+// يمنع أي حدث على الـ select من الانتقال للكرت
+document.querySelectorAll(".no-order").forEach(el => {
+  ["click", "mousedown", "mouseup", "change"].forEach(evt => {
+    el.addEventListener(evt, e => e.stopPropagation());
   });
+});
 
+// كود إضافة الطلب للكرت نفسه
+document.querySelectorAll(".item").forEach(el => {
+  el.addEventListener("click", () => {
+    const nameEl = el.querySelector("h3");
+    const selectEl = el.querySelector(".price-select");
+    const priceEl = el.querySelector(".price");
+    if(!nameEl || !priceEl) return;
+
+    const selectedPrice = selectEl ? parseInt(selectEl.value) : parseInt(priceEl.innerText.replace(/[^0-9]/g,''));
+    const selectedOptionText = selectEl ? selectEl.options[selectEl.selectedIndex].text : "";
+
+    const name = selectedOptionText ? `${nameEl.innerText} (${selectedOptionText.split(" - ")[0]})` : nameEl.innerText;
+    const price = selectedPrice;
+
+    // أضف إلى السلة
+    cart.push({name, price});
+    updateCart();
+    // بعد إضافة عنصر للسلة
+el.classList.add('highlight');
+setTimeout(() => {
+  el.classList.remove('highlight');
+}, 1000);
+
+  });
+});
+
+
+  
   // تحديث السلة
   function updateCart() {
     sideCartItems.innerHTML = "";
@@ -128,4 +164,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // فتح واتساب
     window.open(whatsappURL, "_blank");
   });
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const items = document.querySelectorAll(".item");
+
+  function showItems() {
+    const triggerBottom = window.innerHeight * 0.85; // متى نبدأ العرض
+    items.forEach(item => {
+      const itemTop = item.getBoundingClientRect().top;
+      if(itemTop < triggerBottom) {
+        item.classList.add("show");
+      }
+    });
+  }
+
+  window.addEventListener("scroll", showItems);
+  showItems(); // لتفعيل اللي ظاهر من البداية
 });
