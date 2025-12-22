@@ -174,29 +174,39 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-sendOrderBtn.addEventListener("click", () => {
-  if (cart.length === 0) {
-    alert("السلة فارغة");
-    return;
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const sendOrderBtn = document.getElementById("sendOrder");
+  const sideCartItems = document.getElementById("sideCartItems");
 
-  let message = "🛒 طلب جديد:\n\n";
+  // رقم صاحب المحل
+  const phoneNumber = "96170693041";
 
-  cart.forEach(item => {
-    message += `- ${item.name}\n`;
+  sendOrderBtn.addEventListener("click", () => {
+    const items = sideCartItems.querySelectorAll(".cart-item");
+    if (items.length === 0) {
+      alert("السلة فارغة");
+      return;
+    }
+
+    let message = "🛒 طلب جديد:\n\n";
+    items.forEach(item => {
+    const name = item.children[0].innerText;
+
+
+      message += `- ${name}\n`;
+    });
+
+    // إذا بدك، ممكن تضيف إجمالي السعر هنا
+    const totalPrice = document.getElementById("sideTotalPrice").innerText;
+    message += `\n💰 الإجمالي: ${totalPrice}`;
+
+    // رابط واتساب
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+    // فتح واتساب
+    window.open(whatsappURL, "_blank");
   });
-
-  message += `\n💰 الإجمالي: ${sideTotalPrice.innerText}`;
-
-  const whatsappURL =
-    "https://wa.me/" +
-    phoneNumber +
-    "?text=" +
-    encodeURIComponent(message);
-
-  window.open(whatsappURL, "_blank");
 });
-
 document.addEventListener("DOMContentLoaded", () => {
   const items = document.querySelectorAll(".item");
 
