@@ -44,30 +44,70 @@ document.querySelectorAll(".no-order").forEach(el => {
   });
 });
 
-// كود إضافة الطلب للكرت نفسه
+let selectedItem = null;
+
+const noteModal = document.getElementById("noteModal");
+const noteItemName = document.getElementById("noteItemName");
+const itemNote = document.getElementById("itemNote");
+const addWithNote = document.getElementById("addWithNote");
+const cancelNote = document.getElementById("cancelNote");
+
+// عند الضغط على الصنف
 document.querySelectorAll(".item").forEach(el => {
   el.addEventListener("click", () => {
     const nameEl = el.querySelector("h3");
     const selectEl = el.querySelector(".price-select");
     const priceEl = el.querySelector(".price");
-    if(!nameEl || !priceEl) return;
+    if (!nameEl || !priceEl) return;
 
-    const selectedPrice = selectEl ? parseInt(selectEl.value) : parseInt(priceEl.innerText.replace(/[^0-9]/g,''));
-    const selectedOptionText = selectEl ? selectEl.options[selectEl.selectedIndex].text : "";
+    const price = selectEl
+      ? parseInt(selectEl.value)
+      : parseInt(priceEl.innerText.replace(/[^0-9]/g,''));
 
-    const name = selectedOptionText ? `${nameEl.innerText} (${selectedOptionText.split(" - ")[0]})` : nameEl.innerText;
-    const price = selectedPrice;
+    selectedItem = {
+      name: nameEl.innerText,
+      price: price,
+      element: el
+    };
 
-    // أضف إلى السلة
-    cart.push({name, price});
-    updateCart();
-    // بعد إضافة عنصر للسلة
-el.classList.add('highlight');
-setTimeout(() => {
-  el.classList.remove('highlight');
-}, 1000);
-
+    noteItemName.innerText = selectedItem.name;
+    itemNote.value = "";
+    noteModal.style.display = "flex";
   });
+});
+
+// إضافة للسلة مع الملاحظة
+addWithNote.addEventListener("click", () => {
+  if (!selectedItem) return;
+
+  let finalName = selectedItem.name;
+  const note = itemNote.value.trim();
+
+  if (note) {
+    finalName += ` (ملاحظة: ${note})`;
+  }
+
+  cart.push({
+    name: finalName,
+    price: selectedItem.price
+  });
+
+  updateCart();
+
+  // تأثير الإضافة
+  selectedItem.element.classList.add("highlight");
+  setTimeout(() => {
+    selectedItem.element.classList.remove("highlight");
+  }, 1000);
+
+  noteModal.style.display = "none";
+  selectedItem = null;
+});
+
+// إلغاء
+cancelNote.addEventListener("click", () => {
+  noteModal.style.display = "none";
+  selectedItem = null;
 });
 
 

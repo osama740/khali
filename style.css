@@ -540,3 +540,47 @@ html {
 color-scheme: light;
 
 }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+
+.modal-content {
+  background: #111;
+  border: 2px solid #FFD700;
+  border-radius: 12px;
+  padding: 20px;
+  width: 90%;
+  max-width: 320px;
+  color: #FFD700;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 70px;
+  margin-top: 12px;
+  border-radius: 8px;
+  padding: 8px;
+  resize: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  background: #FFD700;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
