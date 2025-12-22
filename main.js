@@ -190,7 +190,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let message = "🛒 طلب جديد:\n\n";
     items.forEach(item => {
-      const name = item.querySelector(".cart-item span:first-child").innerText;
+    const name = item.children[0].innerText;
+
 
       message += `- ${name}\n`;
     });
