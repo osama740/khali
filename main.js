@@ -174,3 +174,35 @@ document.addEventListener("DOMContentLoaded", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sendOrderBtn = document.getElementById("sendOrder");
+  if (!sendOrderBtn) return;
+
+  const phoneNumber = "96170693041";
+
+  sendOrderBtn.addEventListener("click", () => {
+    const cartItems = document.querySelectorAll("#sideCartItems .cart-item");
+
+    if (cartItems.length === 0) {
+      alert("السلة فارغة");
+      return;
+    }
+
+    let message = "🛒 طلب جديد:\n\n";
+
+    cartItems.forEach(item => {
+      const name = item.querySelector("span").innerText;
+      message += `- ${name}\n`;
+    });
+
+    const totalPrice = document.getElementById("sideTotalPrice").innerText;
+    message += `\n💰 الإجمالي: ${totalPrice}`;
+
+    const whatsappURL =
+      `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+    window.open(whatsappURL, "_blank");
+  });
+});
+
