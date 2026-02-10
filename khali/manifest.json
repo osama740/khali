@@ -1,0 +1,15 @@
+{
+  "name": "Khali Restaurant",
+  "short_name": "Khali",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "IMG-20251013-WA0084-removebg-preview.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

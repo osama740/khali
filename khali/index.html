@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مطعم خالي</title>
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,6 +15,12 @@
 
 
 <body>
+
+  <div id="welcomeScreen" class="welcome-screen">
+    <div class="welcome-content">
+      <h2>مطعم خالي</h2>
+    </div>
+  </div>
 
 
 
@@ -313,9 +321,14 @@
   </div>
   <div id="sideCartItems"></div>
   <div class="sideCart-footer">
-    <span id="sideTotalPrice">0 L.L</span>
-    <button id="clearCart">تفريغ السلة</button>
-    <button id="sendOrder">أرسل الطلب عبر واتساب</button> <!-- هذا الزر الجديد -->
+    <div class="sideCart-total">
+      <span class="total-label">الإجمالي</span>
+      <span id="sideTotalPrice">0 L.L</span>
+    </div>
+    <div class="sideCart-actions">
+      <button id="clearCart">تفريغ السلة</button>
+      <button id="sendOrder">أرسل الطلب عبر واتساب</button>
+    </div>
   </div>
 </div>
 
