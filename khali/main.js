@@ -1,3 +1,5 @@
+const APP_VERSION = "1.0.0";
+
 document.addEventListener("DOMContentLoaded", function() {
 
   const cartButton = document.getElementById("cartButton");
@@ -126,7 +128,7 @@ const clearCartBtn = document.getElementById('clearCart');
     }
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js");
+      navigator.serviceWorker.register("sw.js?v=" + APP_VERSION);
     }
 
   const sendOrderBtn = document.getElementById("sendOrder");
