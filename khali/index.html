@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مطعم خالي</title>
   <meta name="theme-color" content="#000000">
-  <link rel="manifest" href="manifest.json?v=1.0.0">
-  <link rel="stylesheet" href="style.css?v=1.0.0">
+  <link rel="manifest" href="manifest.json?v=1.0.1">
+  <link rel="stylesheet" href="style.css?v=1.0.1">
 </head>
 
 
@@ -212,13 +212,13 @@
           <img src="كرسبي كومبو.png" alt="">
             <h3>كومبو كرسبي</h3>
           <p>كرسبي , بطاطا , كوكتيل , تشدر , باربيكيو , شيبس</p>
-          <span class="price">550,000 L.L</span>
+          <span class="price">600,000 L.L</span>
         </div>
         <div class="item">
           <img src="فاهيتا_كومبو-removebg-preview.png" alt="">
             <h3>كومبو فاهيتا</h3>
           <p>فاهيتا , بطاطا , صوص كوكتيل , تشدر , افوكا صوص , شيبس</p>
-          <span class="price">600,000 L.L</span>
+          <span class="price">650,000 L.L</span>
         </div>
         <div class="item">
           <img src="خالك_لحالك_وجبة-removebg-preview.png" alt="">
@@ -230,6 +230,24 @@
           <h3>وجبة طاووق</h3>
           <p>بطاطا , ثوم , سلطة ملفوف , كبيس</p>
           <span class="price">600,000 L.L</span>
+        </div>
+           <div class="item">
+                <img src="علبة_بطاطا-removebg-preview.png" alt="">
+          <h3>علبة بطاطا صغيرة</h3>
+          <p>بطاطا , بهار بطاطا</p>
+          <span class="price">200,000 L.L</span>
+        </div>
+                     <div class="item">
+                      <img src="علبة_بطاطا-removebg-preview.png" alt="">
+          <h3>علبة بطاطا وسط</h3>
+          <p>بطاطا , بهار بطاطا</p>
+          <span class="price">300,000 L.L</span>
+        </div>
+                             <div class="item">
+                              <img src="علبة_بطاطا-removebg-preview.png" alt="">
+          <h3>علبة بطاطا كبيرة</h3>
+          <p>بطاطا , بهار بطاطا</p>
+          <span class="price">400,000 L.L</span>
         </div>
       </div>
     </section>
@@ -307,6 +325,8 @@
 
 <button id="backToTop" title="العودة للأعلى">↑</button>
 
+<div id="cartHint" class="cart-hint" aria-hidden="true">أرسل طلبك</div>
+
 
 <!-- دائرة السلة -->
 <div id="cartButton">
@@ -332,10 +352,22 @@
   </div>
 </div>
 
+<!-- نافذة ملاحظة الطلب -->
+<div id="orderNoteModal" class="order-note-modal" aria-hidden="true">
+  <div class="order-note-box" role="dialog" aria-modal="true" aria-labelledby="orderNoteTitle">
+    <h3 id="orderNoteTitle">هل تريد إضافة ملاحظة على الطلب؟</h3>
+    <textarea id="orderNoteInput" rows="3" placeholder="اكتب ملاحظتك هنا (اختياري)"></textarea>
+    <div class="order-note-actions">
+      <button id="orderNoteCancel" type="button">إلغاء</button>
+      <button id="orderNoteSubmit" type="button">إرسال</button>
+    </div>
+  </div>
+</div>
 
 
 
 
-<script src="main.js?v=1.0.0"></script>
+
+<script src="main.js?v=1.0.2"></script>
 </body>
 </html>

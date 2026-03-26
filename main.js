@@ -1,3 +1,5 @@
+const APP_VERSION = "1.0.1";
+
 document.addEventListener("DOMContentLoaded", function() {
 
   const cartButton = document.getElementById("cartButton");
@@ -7,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const sideCartItems = document.getElementById("sideCartItems");
   const sideTotalPrice = document.getElementById("sideTotalPrice");
   const clearCartBtn = document.getElementById("clearCart");
+  const cartHint = document.getElementById("cartHint");
 
   let cart = [];
 
@@ -26,6 +29,23 @@ document.addEventListener("DOMContentLoaded", function() {
     sideCart.classList.remove("open");
     document.body.classList.remove("cart-open");
   });
+
+  if (cartHint) {
+    const showCartHint = () => {
+      if (document.body.classList.contains("cart-open")) return;
+      cartHint.classList.add("show");
+      setTimeout(() => {
+        cartHint.classList.remove("show");
+      }, 3000);
+    };
+
+    showCartHint();
+    setInterval(showCartHint, 8000);
+
+    cartButton.addEventListener("click", () => {
+      cartHint.classList.remove("show");
+    });
+  }
 
   let selectedItem = null;
 
@@ -194,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js");
+    navigator.serviceWorker.register("sw.js?v=" + APP_VERSION);
   }
 
   const sendOrderBtn = document.getElementById("sendOrder");

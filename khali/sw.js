@@ -1,4 +1,4 @@
-const CACHE_NAME = "khali-sub-cache-v3";
+const CACHE_NAME = "khali-sub-cache-v5";
 const PRECACHE_URLS = [
   "./",
   "index.html",

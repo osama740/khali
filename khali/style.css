@@ -390,6 +390,52 @@ html {
   transform: translateY(0) scale(1.15);
 }
 
+.cart-hint {
+  position: fixed;
+  right: 20px;
+  bottom: 170px;
+  background: #111;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  z-index: 3100;
+  opacity: 0;
+  transform: translate(-50%, 8px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.cart-hint.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.cart-hint::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: #111;
+  border-right: 1px solid #FFD700;
+  border-bottom: 1px solid #FFD700;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+@media (max-width: 768px) {
+  .cart-hint {
+    right: 14px;
+    bottom: 166px;
+    font-size: 12px;
+    padding: 7px 10px;
+  }
+}
+
 /* الصورة */
 .menu-items img {
   display: block;
@@ -683,4 +729,76 @@ body.cart-open #cartButton {
 
 .cart-buttons button {
   flex: none; /* يمنع أي تمدد */
+}
+
+.order-note-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+  padding: 16px;
+}
+
+.order-note-modal.open {
+  display: flex;
+}
+
+.order-note-box {
+  width: min(420px, 100%);
+  background: #111;
+  border: 1px solid #FFD700;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+.order-note-box h3 {
+  color: #FFD700;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+#orderNoteInput {
+  width: 100%;
+  resize: vertical;
+  min-height: 90px;
+  border: 1px solid #FFD700;
+  border-radius: 8px;
+  background: #000;
+  color: #fff;
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+}
+
+#orderNoteInput:focus {
+  box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.35);
+}
+
+.order-note-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.order-note-actions button {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#orderNoteCancel {
+  background: #2d2d2d;
+  color: #fff;
+}
+
+#orderNoteSubmit {
+  background: #FFD700;
+  color: #000;
 }

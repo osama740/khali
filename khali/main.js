@@ -1,4 +1,4 @@
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.0.2";
 
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -8,10 +8,51 @@ document.addEventListener("DOMContentLoaded", function() {
   const cartCount = document.getElementById("cartCount");
   const sideCartItems = document.getElementById("sideCartItems");
   const sideTotalPrice = document.getElementById("sideTotalPrice");
-const clearCartBtn = document.getElementById('clearCart');
+  const clearCartBtn = document.getElementById("clearCart");
+  const cartHint = document.getElementById("cartHint");
+  const orderNoteModal = document.getElementById("orderNoteModal");
+  const orderNoteInput = document.getElementById("orderNoteInput");
+  const orderNoteSubmit = document.getElementById("orderNoteSubmit");
+  const orderNoteCancel = document.getElementById("orderNoteCancel");
 
 
   let cart = [];
+  let pendingOrder = null;
+
+  function addItemToCart(name, price, note) {
+    const normalizedNote = (note || "").trim();
+    const existing = cart.find(
+      (item) => item.name === name && item.price === price && item.note === normalizedNote
+    );
+
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({ name, price, qty: 1, note: normalizedNote });
+    }
+
+    updateCart();
+  }
+
+  function openOrderNoteModal(name, price) {
+    if (!orderNoteModal || !orderNoteInput) {
+      addItemToCart(name, price, "");
+      return;
+    }
+
+    pendingOrder = { name, price };
+    orderNoteInput.value = "";
+    orderNoteModal.classList.add("open");
+    orderNoteModal.setAttribute("aria-hidden", "false");
+    orderNoteInput.focus();
+  }
+
+  function closeOrderNoteModal() {
+    if (!orderNoteModal) return;
+    orderNoteModal.classList.remove("open");
+    orderNoteModal.setAttribute("aria-hidden", "true");
+    pendingOrder = null;
+  }
 
   // فتح/غلق السلة
   cartButton.addEventListener("click", () => {
@@ -24,27 +65,88 @@ const clearCartBtn = document.getElementById('clearCart');
     document.body.classList.remove("cart-open");
   });
 
+  if (cartHint) {
+    const positionCartHint = () => {
+      const cartRect = cartButton.getBoundingClientRect();
+      const hintHeight = cartHint.offsetHeight || 32;
+      const spacing = 10;
+
+      const top = Math.max(8, cartRect.top - hintHeight - spacing);
+      const left = cartRect.left + cartRect.width / 2;
+
+      cartHint.style.top = `${Math.round(top)}px`;
+      cartHint.style.left = `${Math.round(left)}px`;
+      cartHint.style.right = "auto";
+      cartHint.style.bottom = "auto";
+    };
+
+    const showCartHint = () => {
+      if (document.body.classList.contains("cart-open")) return;
+      positionCartHint();
+      cartHint.classList.add("show");
+      setTimeout(() => {
+        cartHint.classList.remove("show");
+      }, 3000);
+    };
+
+    positionCartHint();
+    showCartHint();
+    setInterval(showCartHint, 8000);
+
+    window.addEventListener("scroll", positionCartHint, { passive: true });
+    window.addEventListener("resize", positionCartHint);
+
+    cartButton.addEventListener("click", () => {
+      cartHint.classList.remove("show");
+    });
+  }
+
   // إضافة عنصر عند الضغط على أي .item
   document.querySelectorAll(".item").forEach(el => {
     el.addEventListener("click", () => {
       const nameEl = el.querySelector("h3");
       const priceEl = el.querySelector(".price");
-      if(!nameEl || !priceEl) return;
+      if (!nameEl || !priceEl) return;
 
       const name = nameEl.innerText;
-      const price = parseInt(priceEl.innerText.replace(/[^0-9]/g,''));
+      const price = parseInt(priceEl.innerText.replace(/[^0-9]/g, ""), 10);
+      if (Number.isNaN(price)) return;
 
-      // أضف إلى السلة
-      const existing = cart.find(
-        (item) => item.name === name && item.price === price
-      );
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({ name, price, qty: 1 });
-      }
-      updateCart();
+      openOrderNoteModal(name, price);
     });
+  });
+
+  if (orderNoteSubmit) {
+    orderNoteSubmit.addEventListener("click", () => {
+      if (!pendingOrder) {
+        closeOrderNoteModal();
+        return;
+      }
+
+      const note = orderNoteInput ? orderNoteInput.value : "";
+      addItemToCart(pendingOrder.name, pendingOrder.price, note);
+      closeOrderNoteModal();
+    });
+  }
+
+  if (orderNoteCancel) {
+    orderNoteCancel.addEventListener("click", () => {
+      closeOrderNoteModal();
+    });
+  }
+
+  if (orderNoteModal) {
+    orderNoteModal.addEventListener("click", (event) => {
+      if (event.target === orderNoteModal) {
+        closeOrderNoteModal();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && orderNoteModal && orderNoteModal.classList.contains("open")) {
+      closeOrderNoteModal();
+    }
   });
 
   // تحديث السلة
@@ -60,10 +162,14 @@ const clearCartBtn = document.getElementById('clearCart');
 
       const div = document.createElement("div");
       div.classList.add("cart-item");
+      const noteHtml = item.note
+        ? `<span class="cart-item-meta">ملاحظة: ${item.note}</span>`
+        : "";
       div.innerHTML = `
         <div class="cart-item-info">
           <span class="cart-item-name">${item.name}</span>
           <span class="cart-item-meta">${item.price.toLocaleString()} L.L</span>
+          ${noteHtml}
         </div>
         <div class="cart-item-controls">
           <button class="qty-btn" data-action="dec" data-index="${index}">-</button>
@@ -108,7 +214,7 @@ const clearCartBtn = document.getElementById('clearCart');
   });
 
   // زر تفريغ السلة
-  if(clearCartBtn){
+  if (clearCartBtn) {
     clearCartBtn.addEventListener("click", () => {
       cart = [];
       updateCart();
@@ -141,14 +247,17 @@ const clearCartBtn = document.getElementById('clearCart');
         return;
       }
 
-      let message = "🛒 طلب جديد:\n\n";
+      let message = "طلب جديد:\n\n";
       cart.forEach(item => {
         const lineTotal = item.price * item.qty;
         message += `- ${item.name} x${item.qty} = ${lineTotal.toLocaleString()} L.L\n`;
+        if (item.note) {
+          message += `  ملاحظة: ${item.note}\n`;
+        }
       });
 
       const totalPrice = document.getElementById("sideTotalPrice").innerText;
-      message += `\n💰 الإجمالي: ${totalPrice}`;
+      message += `\n الإجمالي: ${totalPrice}`;
 
       const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
       window.open(whatsappURL, "_blank");
