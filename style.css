@@ -52,6 +52,8 @@ body.welcome-open {
     0 0 24px rgba(255, 215, 0, 0.35),
     0 0 40px rgba(0, 0, 0, 0.9);
   background: linear-gradient(120deg, #FFD700 20%, #fff7c2 40%, #FFD700 60%);
+  background-clip: text;
+  color: transparent;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -178,6 +180,49 @@ section h2 {
   padding-bottom: 10px;
 }
 
+.section-title-with-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-badge-new {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(120deg, #ffd700 0%, #fff0a8 50%, #ffd700 100%);
+  color: #000;
+  border: 1px solid #ffd700;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+}
+
+.section-badge-new::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7), transparent);
+  transform: translateX(-180%);
+  animation: new-badge-shine 2.8s ease-in-out infinite;
+}
+
+@keyframes new-badge-shine {
+  0% {
+    transform: translateX(-180%);
+  }
+  45% {
+    transform: translateX(260%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
+}
+
 /* Menu items */
 .menu-items {
   display: grid;
@@ -294,6 +339,16 @@ section:hover {
 
 /* ===== Responsive - Mobile ===== */
 @media (max-width: 768px) {
+
+  .section-title-with-badge {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .section-badge-new {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
 
   /* الهيدر */
   .main-header h1 {
