@@ -2,6 +2,58 @@ const APP_VERSION = "1.0.1";
 
 document.addEventListener("DOMContentLoaded", function() {
 
+  function buildBbqVariantOptions() {
+    const bbqSelects = document.querySelectorAll(".bbq-variant-select");
+
+    bbqSelects.forEach((selectEl) => {
+      const basePrice = parseInt(selectEl.dataset.basePrice || "0", 10);
+      if (!basePrice) return;
+
+      const friesExtra = parseInt(selectEl.dataset.friesExtra || "0", 10);
+      const explicitDoublePrice = parseInt(
+        selectEl.dataset.doublePrice || "0",
+        10
+      );
+      const doubleMultiplier = parseInt(
+        selectEl.dataset.doubleMultiplier || "2",
+        10
+      );
+      const doublePrice = explicitDoublePrice || basePrice * doubleMultiplier;
+
+      const variants = [
+        {
+          label: "عادي",
+          price: basePrice,
+          optionText: "عادي"
+        },
+        {
+          label: "عادي + زيادة بطاطا",
+          price: basePrice + friesExtra,
+          optionText: "عادي + زيادة بطاطا"
+        },
+        {
+          label: "دوبل",
+          price: doublePrice,
+          optionText: "دوبل"
+        },
+        {
+          label: "دوبل + زيادة بطاطا",
+          price: doublePrice + friesExtra,
+          optionText: "دوبل + زيادة بطاطا"
+        }
+      ];
+
+      selectEl.innerHTML = variants
+        .map(
+          (variant) =>
+            `<option value="${variant.price}" data-option="${variant.optionText}">${variant.label} - ${variant.price.toLocaleString()} L.L</option>`
+        )
+        .join("");
+    });
+  }
+
+  buildBbqVariantOptions();
+
   const cartButton = document.getElementById("cartButton");
   const sideCart = document.getElementById("sideCart");
   const closeCart = document.getElementById("closeCart");
