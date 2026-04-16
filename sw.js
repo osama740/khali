@@ -1,4 +1,4 @@
-const CACHE_NAME = "khali-cache-v5";
+const CACHE_NAME = "khali-cache-v6";
 const PRECACHE_URLS = [
   "./",
   "index.html",
@@ -58,24 +58,34 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
 
-  if (request.mode === "navigate") {
-    event.respondWith(
-      caches.match(encodeURI("index.html")).then((cached) => cached || fetch(request))
-    );
-    return;
-  }
+  const isNavigationRequest = request.mode === "navigate";
+  const isCoreAsset = ["script", "style", "manifest"].includes(request.destination);
 
   event.respondWith(
-    caches.match(request).then((cached) => {
+    (async () => {
+      const cache = await caches.open(CACHE_NAME);
+
+      if (isNavigationRequest || isCoreAsset) {
+        try {
+          const freshResponse = await fetch(request, { cache: "no-store" });
+          cache.put(request, freshResponse.clone());
+          return freshResponse;
+        } catch (error) {
+          const cached = await cache.match(request);
+          if (cached) return cached;
+          if (isNavigationRequest) {
+            return cache.match(encodeURI("index.html"));
+          }
+          throw error;
+        }
+      }
+
+      const cached = await cache.match(request);
       if (cached) return cached;
 
-      return fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => cached);
-    })
+      const response = await fetch(request);
+      cache.put(request, response.clone());
+      return response;
+    })()
   );
 });
