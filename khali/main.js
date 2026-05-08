@@ -108,9 +108,13 @@ document.addEventListener("DOMContentLoaded", function() {
       const priceEl = el.querySelector(".price");
       if (!nameEl || !priceEl) return;
 
-      const name = nameEl.innerText;
-      const price = parseInt(priceEl.innerText.replace(/[^0-9]/g, ""), 10);
-      if (Number.isNaN(price)) return;
+      const breadOption = el.querySelector(".bread-option input[type='radio']:checked");
+      const name = breadOption
+        ? `${nameEl.innerText} - ${breadOption.value || ""}`.trim()
+        : nameEl.innerText;
+
+      const priceText = priceEl.dataset.price || priceEl.innerText || "0";
+      const price = parseInt(String(priceText).replace(/[^0-9]/g, ""), 10) || 0;
 
       openOrderNoteModal(name, price);
     });

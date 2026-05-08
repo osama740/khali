@@ -114,8 +114,14 @@ document.addEventListener("DOMContentLoaded", function() {
       const nameEl = el.querySelector("h3");
       const selectEl = el.querySelector(".price-select");
       const priceEl = el.querySelector(".price");
+      const breadOption = el.querySelector(".bread-option input[type='radio']:checked");
+      const isBreakfastItem = el.classList.contains("breakfast-item");
 
       if (!nameEl) return;
+
+      if (isBreakfastItem && !breadOption) {
+        return;
+      }
 
       let baseName = nameEl.innerText;
       let finalName = baseName;
@@ -130,8 +136,17 @@ document.addEventListener("DOMContentLoaded", function() {
         if (optionText && optionText !== "عادي") {
           finalName = `${baseName} - ${optionText}`;
         }
+      } else if (breadOption) {
+        const breadText = breadOption.value || breadOption.closest("label")?.innerText.trim() || "";
+        const priceText = priceEl?.dataset.price || priceEl?.innerText || "0";
+        price = parseInt(String(priceText).replace(/[^0-9]/g, ""), 10) || 0;
+
+        if (breadText) {
+          finalName = `${baseName} - ${breadText}`;
+        }
       } else if (priceEl) {
-        price = parseInt(priceEl.innerText.replace(/[^0-9]/g, ""));
+        const priceText = priceEl.dataset.price || priceEl.innerText || "0";
+        price = parseInt(String(priceText).replace(/[^0-9]/g, ""), 10) || 0;
       }
 
       selectedItem = {
@@ -233,6 +248,24 @@ document.addEventListener("DOMContentLoaded", function() {
       case "dec":
         cart[idx].qty -= 1;
         if (cart[idx].qty <= 0) {
+    // إضافة عنصر عند الضغط على أي .item
+    document.querySelectorAll(".item").forEach(el => {
+      el.addEventListener("click", () => {
+        const nameEl = el.querySelector("h3");
+        const priceEl = el.querySelector(".price");
+        if (!nameEl || !priceEl) return;
+
+        const breadOption = el.querySelector(".bread-option input[type='radio']:checked");
+        const name = breadOption
+          ? `${nameEl.innerText} - ${breadOption.value || ""}`.trim()
+          : nameEl.innerText;
+
+        const priceText = priceEl.dataset.price || priceEl.innerText || "0";
+        const price = parseInt(String(priceText).replace(/[^0-9]/g, ""), 10) || 0;
+
+        openOrderNoteModal(name, price);
+      });
+    });
           cart.splice(idx, 1);
         }
         break;
@@ -300,7 +333,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const items = document.querySelectorAll(".item");
 
   function showItems() {
-    const triggerBottom = window.innerHeight * 0.85;
+    const triggerBottom = window.innerHeight * 0.96;
     items.forEach(item => {
       const itemTop = item.getBoundingClientRect().top;
       if (itemTop < triggerBottom) {
