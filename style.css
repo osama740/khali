@@ -10,6 +10,11 @@ body {
   color: #fff;
 }
 
+:root {
+  --slider-card-bg: linear-gradient(145deg, #171717 0%, #0b0b0b 100%);
+  --slider-border: rgba(255, 215, 0, 0.55);
+}
+
 body.welcome-open {
   overflow: hidden;
 }
@@ -178,6 +183,168 @@ section h2 {
   margin-bottom: 30px;
   border-bottom: 2px solid #FFD700;
   padding-bottom: 10px;
+}
+
+.menu-showcase {
+  position: relative;
+  margin-top: 32px;
+  padding: 28px 18px 22px;
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 215, 0, 0.14) 0%, transparent 48%),
+    radial-gradient(circle at 85% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 46%),
+    #080808;
+  overflow: hidden;
+}
+
+.showcase-title {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 10px;
+}
+
+.showcase-title-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #ffd700 0%, #fff4b5 50%, #ffd700 100%);
+  color: #000;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.25), 0 8px 18px rgba(255, 215, 0, 0.12);
+}
+
+.showcase-subtitle {
+  color: #f7eab1;
+  opacity: 0.92;
+  font-size: 14px;
+  margin-top: -12px;
+  margin-bottom: 16px;
+}
+
+.loop-slider {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  direction: ltr;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 7%, #000 93%, transparent 100%);
+}
+
+.loop-slider-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  will-change: transform;
+  padding: 8px 2px 14px;
+  direction: ltr;
+}
+
+.loop-slide-card {
+  width: clamp(150px, 18vw, 190px);
+  flex: 0 0 auto;
+  border: 1px solid var(--slider-border);
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: center;
+  background: var(--slider-card-bg);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.42);
+  transform: scale(0.94);
+  opacity: 0.8;
+  transition: transform 0.28s ease, opacity 0.28s ease, box-shadow 0.28s ease;
+}
+
+.loop-slide-card.active {
+  transform: scale(1.06) translateY(-4px);
+  opacity: 1;
+  background: linear-gradient(135deg, #fff7c9 0%, #ffd700 22%, #fff1a6 48%, #ffcf2f 72%, #fff7c9 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 230, 128, 0.95),
+    0 0 18px rgba(255, 215, 0, 0.55),
+    0 14px 30px rgba(255, 196, 0, 0.28);
+  position: relative;
+  overflow: hidden;
+}
+
+.loop-slide-card.active h3 {
+  color: #000;
+  text-shadow: none;
+}
+
+.loop-slide-card.active::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 35%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0.35) 65%,
+    transparent 100%
+  );
+  transform: translateX(-140%);
+  animation: gold-shine 2.3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.loop-slide-card.active::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 15% 50%, rgba(255, 215, 0, 0.42) 0%, rgba(255, 215, 0, 0.18) 28%, transparent 68%),
+    radial-gradient(circle at 85% 50%, rgba(255, 215, 0, 0.42) 0%, rgba(255, 215, 0, 0.18) 28%, transparent 68%);
+  filter: blur(10px);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.loop-slide-card.active img {
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.2));
+}
+
+@keyframes gold-shine {
+  0% {
+    transform: translateX(-140%);
+  }
+  55% {
+    transform: translateX(140%);
+  }
+  100% {
+    transform: translateX(140%);
+  }
+}
+
+.loop-slide-card img {
+  width: 100%;
+  height: clamp(96px, 14vw, 130px);
+  object-fit: contain;
+  background: radial-gradient(circle at 50% 18%, rgba(255, 215, 0, 0.2), transparent 62%);
+  animation: float-image 3.8s ease-in-out infinite;
+}
+
+.loop-slide-card h3 {
+  margin: 10px 10px 12px;
+  font-size: clamp(13px, 1.8vw, 15px);
+  color: #FFD700;
+  background: transparent;
+  display: block;
+  padding: 0;
+}
+
+.section-slider {
+  margin-bottom: 18px;
+}
+
+@keyframes float-image {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
 }
 
 .section-title-with-badge {
@@ -402,6 +569,10 @@ section:hover {
 /* ===== Responsive - Mobile ===== */
 @media (max-width: 768px) {
 
+  .container {
+    width: 94%;
+  }
+
   .section-title-with-badge {
     flex-wrap: wrap;
     gap: 8px;
@@ -442,6 +613,36 @@ section:hover {
     font-size: 14px;
   }
 
+  .menu-showcase {
+    margin-top: 18px;
+    padding: 18px 12px 14px;
+    border-radius: 14px;
+  }
+
+  .showcase-title-badge {
+    font-size: 15px;
+    padding: 7px 14px;
+  }
+
+  .showcase-subtitle {
+    font-size: 13px;
+    margin-top: -10px;
+    margin-bottom: 12px;
+  }
+
+  .loop-slide-card {
+    width: 128px;
+  }
+
+  .loop-slide-card img {
+    height: 92px;
+  }
+
+  .loop-slide-card h3 {
+    font-size: 12px;
+    margin: 8px 8px 10px;
+  }
+
   /* السكشن */
   section {
     margin: 30px 0;
@@ -455,18 +656,88 @@ section:hover {
   /* الكروت */
   .menu-items {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .item {
-    padding: 15px;
+    padding: 11px 9px;
+    border-radius: 12px;
   }
 
   .item h3 {
-    font-size: 16px;
+    font-size: 14px;
+    padding: 5px 9px;
   }
 
   .price {
+    font-size: 13px;
+  }
+
+  .menu-items img {
+    height: 110px;
+    margin-bottom: 4px;
+  }
+
+  .item p {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .item:hover,
+  .item.touch-active {
+    transform: scale(1.03);
+  }
+
+  .bread-options {
+    gap: 10px;
+  }
+
+  .bread-option {
+    min-height: 32px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header {
+    padding: 22px 0;
+  }
+
+  .main-header h1 {
+    font-size: 24px;
+  }
+
+  .main-header p {
+    font-size: 13px;
+  }
+
+  .menu-showcase {
+    padding: 16px 10px 12px;
+  }
+
+  .showcase-title-badge {
     font-size: 14px;
+    padding: 6px 12px;
+  }
+
+  .showcase-subtitle {
+    font-size: 12px;
+  }
+
+  .menu-items img {
+    height: 102px;
+  }
+
+  .item {
+    padding: 10px 8px;
+  }
+
+  .item h3 {
+    font-size: 13px;
+  }
+
+  .item p {
+    font-size: 11px;
   }
 }
 /* Smooth Scroll لجميع الروابط الداخلية */

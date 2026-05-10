@@ -404,3 +404,135 @@ document.addEventListener("DOMContentLoaded", () => {
   setActiveLink();
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  function collectSliderItems(sectionId) {
+    const section = document.getElementById(sectionId);
+    if (!section) return [];
+
+    return Array.from(section.querySelectorAll(".menu-items .item"))
+      .map((item) => {
+        const title = item.querySelector("h3")?.textContent?.trim() || "";
+        const imgSrc = item.querySelector("img")?.getAttribute("src")?.trim() || "";
+        const imgAlt = item.querySelector("img")?.getAttribute("alt")?.trim() || title;
+
+        if (!title || !imgSrc) return null;
+
+        return {
+          title,
+          imgSrc,
+          imgAlt
+        };
+      })
+      .filter(Boolean);
+  }
+
+  function buildLoopSlider(container, items, speed) {
+    if (!container || !Array.isArray(items) || items.length < 2) return;
+
+    const track = document.createElement("div");
+    track.className = "loop-slider-track";
+
+    const loopItems = items.concat(items);
+    loopItems.forEach((entry) => {
+      const card = document.createElement("article");
+      card.className = "loop-slide-card";
+      card.innerHTML = `
+        <img src="${entry.imgSrc}" alt="${entry.imgAlt}" loading="lazy">
+        <h3>${entry.title}</h3>
+      `;
+      track.appendChild(card);
+    });
+
+    container.innerHTML = "";
+    container.appendChild(track);
+
+    const cards = Array.from(track.children);
+    if (cards.length < 4) return;
+
+    let loopWidth = cards[items.length].offsetLeft - cards[0].offsetLeft;
+    let offset = 0;
+    let lastTs = 0;
+    let activeCard = null;
+    let frameCount = 0;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const setActiveCard = () => {
+      const sliderBox = container.getBoundingClientRect();
+      const centerX = sliderBox.left + sliderBox.width / 2;
+
+      let nearest = null;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      cards.forEach((card) => {
+        const box = card.getBoundingClientRect();
+        const cardCenter = box.left + box.width / 2;
+        const distance = Math.abs(cardCenter - centerX);
+
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearest = card;
+        }
+      });
+
+      if (activeCard && activeCard !== nearest) {
+        activeCard.classList.remove("active");
+      }
+
+      if (nearest && activeCard !== nearest) {
+        nearest.classList.add("active");
+        activeCard = nearest;
+      }
+    };
+
+    const handleResize = () => {
+      loopWidth = cards[items.length].offsetLeft - cards[0].offsetLeft;
+      setActiveCard();
+    };
+
+    if (reduceMotion) {
+      setActiveCard();
+      window.addEventListener("resize", handleResize);
+      return;
+    }
+
+    const tick = (ts) => {
+      if (!lastTs) lastTs = ts;
+      const dt = Math.min(ts - lastTs, 64);
+      lastTs = ts;
+
+      if (loopWidth > 0) {
+        offset += speed * (dt / 16.6667);
+        if (offset >= loopWidth) {
+          offset -= loopWidth;
+        }
+        track.style.transform = `translate3d(-${offset}px, 0, 0)`;
+      }
+
+      frameCount += 1;
+      if (frameCount % 4 === 0) {
+        setActiveCard();
+      }
+
+      requestAnimationFrame(tick);
+    };
+
+    document.addEventListener("visibilitychange", () => {
+      lastTs = 0;
+    });
+
+    window.addEventListener("resize", handleResize);
+    setActiveCard();
+    requestAnimationFrame(tick);
+  }
+
+  const sandwichItems = collectSliderItems("sandwiches");
+  const burgerItems = collectSliderItems("burgers");
+
+  const heroItems = sandwichItems
+    .slice(0, 6)
+    .concat(burgerItems.slice(0, 6));
+
+  buildLoopSlider(document.getElementById("menuHeroSlider"), heroItems, 0.38);
+});
+
