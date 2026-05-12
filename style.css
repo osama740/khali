@@ -282,6 +282,8 @@ section h2 {
   will-change: transform;
   padding: 12px 6px 18px;
   direction: ltr;
+  cursor: grab;
+  transition: cursor 0.2s ease;
 }
 
 .loop-slide-card {
@@ -428,8 +430,9 @@ section h2 {
 /* Menu items */
 .menu-items {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+  align-items: stretch;
 }
 
 .item {
@@ -438,6 +441,10 @@ section h2 {
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .item h3 {
@@ -447,6 +454,8 @@ section h2 {
 
 .item p {
   font-size: 14px;
+  flex-grow: 1;
+  margin-bottom: 12px;
 }
 
 .price {
@@ -458,7 +467,7 @@ section h2 {
 
 /* Bread option styles for small radio groups */
 .bread-options {
-  margin: 14px 0 10px;
+  margin: 12px 0;
   padding: 4px 2px;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1165,6 +1174,7 @@ body.cart-open #cartButton {
 .item .price-select-wrapper {
   position: relative;
   width: 100%;
+  margin-top: auto;
 }
 
 .item .price-select {

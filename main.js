@@ -454,6 +454,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastTs = 0;
     let activeCard = null;
     let frameCount = 0;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartOffset = 0;
+    let dragResumeTimeout = null;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -490,6 +494,58 @@ document.addEventListener("DOMContentLoaded", () => {
       setActiveCard();
     };
 
+    // Touch and mouse event handlers
+    const handleDragStart = (e) => {
+      if (isDragging) return;
+      isDragging = true;
+      dragStartX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+      dragStartOffset = offset;
+      lastTs = 0;
+      track.style.cursor = "grabbing";
+      track.style.userSelect = "none";
+      
+      if (dragResumeTimeout) {
+        clearTimeout(dragResumeTimeout);
+        dragResumeTimeout = null;
+      }
+    };
+
+    const handleDragMove = (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      
+      const currentX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+      const dragDelta = dragStartX - currentX;
+      
+      offset = dragStartOffset + dragDelta;
+      
+      if (loopWidth > 0) {
+        if (offset >= loopWidth) {
+          offset -= loopWidth;
+        } else if (offset < 0) {
+          offset += loopWidth;
+        }
+      }
+      
+      track.style.transform = `translate3d(-${offset}px, 0, 0)`;
+      setActiveCard();
+    };
+
+    const handleDragEnd = (e) => {
+      if (!isDragging) return;
+      isDragging = false;
+      track.style.cursor = "grab";
+      track.style.userSelect = "auto";
+      
+      // Resume automatic scrolling after a short delay
+      if (dragResumeTimeout) {
+        clearTimeout(dragResumeTimeout);
+      }
+      dragResumeTimeout = setTimeout(() => {
+        lastTs = 0;
+      }, 100);
+    };
+
     if (reduceMotion) {
       setActiveCard();
       window.addEventListener("resize", handleResize);
@@ -497,6 +553,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const tick = (ts) => {
+      if (isDragging) {
+        requestAnimationFrame(tick);
+        return;
+      }
+
       if (!lastTs) lastTs = ts;
       const dt = Math.min(ts - lastTs, 64);
       lastTs = ts;
@@ -522,6 +583,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     window.addEventListener("resize", handleResize);
+    
+    // Add touch and mouse event listeners
+    container.addEventListener("mousedown", handleDragStart);
+    container.addEventListener("mousemove", handleDragMove);
+    container.addEventListener("mouseup", handleDragEnd);
+    container.addEventListener("mouseleave", handleDragEnd);
+    container.addEventListener("touchstart", handleDragStart);
+    container.addEventListener("touchmove", handleDragMove, { passive: false });
+    container.addEventListener("touchend", handleDragEnd);
+    
     setActiveCard();
     requestAnimationFrame(tick);
   }
